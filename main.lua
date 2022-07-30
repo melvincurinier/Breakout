@@ -21,7 +21,11 @@ function love.load()
         ['hearts'] = love.graphics.newImage('graphics/hearts.png'),
         ['particle'] = love.graphics.newImage('graphics/particle.png')
     }
-    
+
+    gFrames = {
+        ['paddles'] = GenerateQuadsPaddles(gTextures['main'])
+    }
+
     push:setupScreen(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, WINDOW_WIDTH, WINDOW_HEIGHT, {
         vsync = true,
         fullscreen = false,
@@ -47,7 +51,12 @@ function love.load()
     }
 
     gStateMachine = StateMachine {
-        ['start'] = function() return StartState() end
+        ['start'] = function()
+            return StartState()
+        end,
+        ['play'] = function()
+            return PlayState()
+        end
     }
     gStateMachine:change('start')
 
@@ -65,7 +74,6 @@ function love.update(dt)
 end
 
 function love.keypressed(key)
-    -- add to our table of keys pressed this frame
     love.keyboard.keysPressed[key] = true
 end
 
@@ -83,15 +91,13 @@ function love.draw()
     local backgroundWidth = gTextures['background']:getWidth()
     local backgroundHeight = gTextures['background']:getHeight()
 
-    love.graphics.draw(gTextures['background'],
-        0, 0, 
-        0,
-        VIRTUAL_WIDTH / (backgroundWidth - 1), VIRTUAL_HEIGHT / (backgroundHeight - 1))
-    
+    love.graphics.draw(gTextures['background'], 0, 0, 0, VIRTUAL_WIDTH / (backgroundWidth - 1),
+        VIRTUAL_HEIGHT / (backgroundHeight - 1))
+
     gStateMachine:render()
-    
+
     displayFPS()
-    
+
     push:apply('end')
 end
 

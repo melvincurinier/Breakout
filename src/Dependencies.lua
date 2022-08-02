@@ -17,6 +17,7 @@ require 'src/StateMachine'
 require 'src/Util'
 
 require 'src/states/BaseState'
+require 'src/states/EnterHighScoreState'
 require 'src/states/GameOverState'
 require 'src/states/HighScoreState'
 require 'src/states/PlayState'
